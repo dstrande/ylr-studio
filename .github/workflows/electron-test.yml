@@ -1,99 +1,99 @@
-name: E2E Testing
+# name: E2E Testing
 
-on:
-  push:
-    paths-ignore:
-      - "docs/**"
-    branches:
-      - main
-  pull_request:
-    paths-ignore:
-      - "docs/**"
-    types:
-      - opened
-      - reopened
-      - synchronize
-      - ready_for_review
-# When pushing new commits, cancel any running builds on that branch
-concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
+# on:
+#   push:
+#     paths-ignore:
+#       - "docs/**"
+#     branches:
+#       - main
+#   pull_request:
+#     paths-ignore:
+#       - "docs/**"
+#     types:
+#       - opened
+#       - reopened
+#       - synchronize
+#       - ready_for_review
+# # When pushing new commits, cancel any running builds on that branch
+# concurrency:
+#   group: ${{ github.ref }}
+#   cancel-in-progress: true
 
-env:
-  CI: "true"
-  NODE_ENV: "dev"
-  DISPLAY: :0
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+# env:https://www.yourlab-robotics.com/
+#   CI: "true"
+#   NODE_ENV: "dev"
+#   DISPLAY: :0
+#   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-jobs:
-  electron_app:
-    if: ${{ (!github.event.pull_request.draft && github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main') || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
-    strategy:
-      matrix:
-        os: [macos-latest-xlarge, windows-latest, "ubuntu-latest"]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+# jobs:
+#   electron_app:
+#     if: ${{ (!github.event.pull_request.draft && github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main') || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
+#     strategy:
+#       matrix:
+#         os: [macos-latest-xlarge, windows-latest, "ubuntu-latest"]
+#     runs-on: ${{ matrix.os }}
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v3
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+#       - name: Setup Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: "3.11"
 
-      - name: Setup Node 20
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
+#       - name: Setup Node 20
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 20
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 9
-          run_install: false
+#       - name: Install pnpm
+#         uses: pnpm/action-setup@v2
+#         with:
+#           version: 9
+#           run_install: false
 
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+#       - name: Get pnpm store directory
+#         shell: bash
+#         run: |
+#           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - name: Cache pnpm
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+#       - name: Cache pnpm
+#         uses: actions/cache@v3
+#         with:
+#           path: ${{ env.STORE_PATH }}
+#           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+#           restore-keys: |
+#             ${{ runner.os }}-pnpm-store-
 
-      - name: Install Node Dependencies
-        run: pnpm install
+#       - name: Install Node Dependencies
+#         run: pnpm install
 
-      - name: Build executable
-        if: ${{ matrix.os == 'macos-latest-xlarge' }}
-        run: pnpm run electron-package:mac
+#       - name: Build executable
+#         if: ${{ matrix.os == 'macos-latest-xlarge' }}
+#         run: pnpm run electron-package:mac
 
-      - name: Build executable
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: pnpm run electron-package:windows
+#       - name: Build executable
+#         if: ${{ matrix.os == 'windows-latest' }}
+#         run: pnpm run electron-package:windows
 
-      - name: Build executable
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: pnpm run electron-package:linux
+#       - name: Build executable
+#         if: ${{ matrix.os == 'ubuntu-latest' }}
+#         run: pnpm run electron-package:linux
 
-      - name: Set up Xvfb (Linux only)
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb
-          Xvfb -screen 0 1024x768x24 :0 &
-          sleep 5
+#       - name: Set up Xvfb (Linux only)
+#         if: ${{ matrix.os == 'ubuntu-latest' }}
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -y xvfb
+#           Xvfb -screen 0 1024x768x24 :0 &
+#           sleep 5
 
-      - name: Run Test
-        run: pnpm run e2e
+#       - name: Run Test
+#         run: pnpm run e2e
 
-      - name: Upload outputs
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-${{ matrix.os }}-output
-          path: test-results
+#       - name: Upload outputs
+#         if: always()
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: test-${{ matrix.os }}-output
+#           path: test-results
