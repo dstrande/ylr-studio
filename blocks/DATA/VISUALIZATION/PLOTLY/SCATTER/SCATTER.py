@@ -56,7 +56,9 @@ def SCATTER(default: OrderedPair | DataFrame | Matrix | Vector) -> Plotly:
 
             for i in range(num_rows):
                 fig.add_trace(
-                    go.Scatter(x=x_ticks, y=m[i, :], name=f"Row {i+1}", mode="markers")
+                    go.Scatter(
+                        x=x_ticks, y=m[i, :], name=f"Row {i + 1}", mode="markers"
+                    )
                 )
 
             fig.update_layout(xaxis_title="Column", yaxis_title="Value")

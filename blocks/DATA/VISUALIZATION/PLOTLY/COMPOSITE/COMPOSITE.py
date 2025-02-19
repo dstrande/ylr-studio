@@ -99,7 +99,7 @@ def add_bar_trace(fig: go.Figure, dc: OrderedPair | Matrix | DataFrame | Vector)
             x_ticks = np.arange(num_cols)
 
             for i in range(num_rows):
-                fig.add_trace(go.Bar(x=x_ticks, y=m[i, :], name=f"Row {i+1}"))
+                fig.add_trace(go.Bar(x=x_ticks, y=m[i, :], name=f"Row {i + 1}"))
             fig.update_layout(xaxis_title="Column", yaxis_title="Value")
         case Vector():
             y = dc.v
@@ -168,7 +168,7 @@ def add_line_trace(fig: go.Figure, dc: OrderedPair | Matrix | DataFrame | Vector
             x_ticks = np.arange(num_cols)
             for i in range(num_rows):
                 fig.add_trace(
-                    go.Scatter(x=x_ticks, y=m[i, :], name=f"Row {i+1}", mode="lines")
+                    go.Scatter(x=x_ticks, y=m[i, :], name=f"Row {i + 1}", mode="lines")
                 )
             fig.update_layout(xaxis_title="Column", yaxis_title="Value")
         case Vector():
@@ -209,7 +209,9 @@ def add_scatter_trace(fig: go.Figure, dc: OrderedPair | Matrix | DataFrame | Vec
             x_ticks = np.arange(num_cols)
             for i in range(num_rows):
                 fig.add_trace(
-                    go.Scatter(x=x_ticks, y=m[i, :], name=f"Row {i+1}", mode="markers")
+                    go.Scatter(
+                        x=x_ticks, y=m[i, :], name=f"Row {i + 1}", mode="markers"
+                    )
                 )
 
             fig.update_layout(xaxis_title="Column", yaxis_title="Value")

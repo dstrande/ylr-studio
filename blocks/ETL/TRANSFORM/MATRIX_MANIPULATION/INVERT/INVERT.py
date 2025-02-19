@@ -40,9 +40,9 @@ def INVERT(default: OrderedPair | Matrix, rcond: float = 1.0) -> OrderedPair | M
     elif isinstance(default, Matrix):
         a = default.m
         if not a.shape[0] == a.shape[1]:
-            assert isinstance(
-                b, float
-            ), "Need scalar value to compare SVDs for pseudoinversion"
+            assert isinstance(b, float), (
+                "Need scalar value to compare SVDs for pseudoinversion"
+            )
             retval = np.linalg.pinv(a, rcond=b, hermitian=False)
         else:
             try:

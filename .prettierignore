@@ -10,3 +10,4 @@ docs/pnpm-lock.yaml
 blocks/*
 docs/src/content/*
 .ruff_cache/*
+.github/workflows/*

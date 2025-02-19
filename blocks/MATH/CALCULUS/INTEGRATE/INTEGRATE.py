@@ -38,11 +38,11 @@ def INTEGRATE(default: OrderedPair | Vector) -> OrderedPair:
             input_x = np.arange(len(default.v))
             input_y = default.v
 
-    if type(input_x) != np.ndarray:
+    if type(input_x) is not np.ndarray:
         raise ValueError(f"Invalid type for x:{type(input_x)}")
-    elif type(input_y) != np.ndarray:
+    elif type(input_y) is not np.ndarray:
         raise ValueError(f"Invalid type for y:{type(input_y)}")
-    elif len(input_x) != len(input_y):
+    elif len(input_x) is not len(input_y):
         raise ValueError(
             f"X and Y keys must have the same length got, x:{len(input_x)} y:{len(input_y)}"
         )
