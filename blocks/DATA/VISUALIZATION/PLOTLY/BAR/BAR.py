@@ -67,7 +67,7 @@ def BAR(default: OrderedPair | DataFrame | Matrix | Vector) -> Plotly:
             x_ticks = np.arange(num_cols)
 
             for i in range(num_rows):
-                fig.add_trace(go.Bar(x=x_ticks, y=m[i, :], name=f"Row {i+1}"))
+                fig.add_trace(go.Bar(x=x_ticks, y=m[i, :], name=f"Row {i + 1}"))
 
             fig.update_layout(xaxis_title="Column", yaxis_title="Value")
         case Vector():
