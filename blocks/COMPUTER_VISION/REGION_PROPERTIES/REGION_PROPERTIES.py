@@ -166,12 +166,12 @@ def REGION_PROPERTIES(default: Optional[Image | Grayscale | Matrix] = None) -> P
 
     for index in range(labels.max()):
         label_i = rprops[index].label
-        contour = find_contours(labels == label_i, 0.5)[0]
+        contour = find_contours(labels is label_i, 0.5)[0]
         y, x = contour.T
         hoverinfo = ""
         for prop_name in properties:
             val = getattr(rprops[index], prop_name)
-            if type(val) == tuple:
+            if type(val) is tuple:
                 line = [
                     f" <b>{prop_name}_{idv}: {v:.2f}</b>" for idv, v in enumerate(val)
                 ]
